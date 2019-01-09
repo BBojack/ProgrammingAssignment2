@@ -1,5 +1,6 @@
 ## Put comments here that give an overall description of what your
 ## functions do
+## Give a new CacheMatrix when there is a new invertible matrix
 
 ## Write a short comment describing this function
 ##The first function, makeCacheMatrix creates a special "matrix", which is really a list containing a function to
@@ -9,14 +10,17 @@
 ##4.get the matrix of the inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-  m <- NULL
+  #Initialize the inverse
+  inverse <- NULL
   set <- function(y){
     x <<- y
-    m <<- NULL
+    #assign a matrix impling its change and the cached inverse is not valid   
+    inverse <<- NULL
   }
-  get <- function() x
-  setinverse <- function(solve) m<<-mean
-  getinverse <- function() m
+  # make new methods
+  get <- function() x 
+  setinverse <- function(solve) inverse<<- inverse
+  getinverse <- function() inverse
   list(set=set,get=get,setinverse=setinverse,getinverse=getinverse)
 }
 
@@ -28,13 +32,13 @@ makeCacheMatrix <- function(x = matrix()) {
 ##Otherwise, it calculates the inversion of the data and sets the inversion matrix in the cache via the setmean function.
 cacheSolve <- function(x, ...) {
   ## Return a matrix that is the inverse of 'x'
-  m <- x$getinverse()
-  if(!is.null(m)){
+  inverse <- x$getinverse()
+  if(!is.null(inverse)){
     message('getting cached data')
-    return(m)
+    return(inverse)
   }
   data <- x$get()
-  m <- solve(data,...)
-  x$setinverse(m)
-  m
+  inverse <- solve(data,...)
+  x$setinverse(inverse)
+  inverse
 }
